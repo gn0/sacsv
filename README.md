@@ -10,6 +10,7 @@ The tools are:
 - `csvappend`: appends two or more csv files
 - `csvdropdups`: drops duplicate records
 - `csvfindsortkey`: attempts to find the column that the input is sorted by
+- `csvkeepmax`: keeps the record that has the maximum value in a column
 - `csvleftjoin`: merges two csv files
 - `csvop`: applies an arbitrary Python function to every record and saves the return value in a new column
 - `csvreorder`: changes the order of columns
