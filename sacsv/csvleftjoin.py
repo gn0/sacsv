@@ -11,10 +11,8 @@ def make_selector(keys, columns):
 
 
 @argh.arg("--join-table", "-j", type=str, required=True)
-@argh.arg("--key", "-k", type=str, required=True)
-def main(join_table=None, key=None):
-    keys = key.split(",")
-
+@argh.arg("--keys", "-k", nargs="+", type=str, required=True)
+def main(join_table=None, keys=None):
     with open(join_table, "r") as f:
         reader = csv.reader(f)
         join_columns = reader.next()
