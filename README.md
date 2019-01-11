@@ -13,6 +13,7 @@ The tools are:
 - `csvkeepmax`: keeps the record that has the maximum value in a column
 - `csvleftjoin`: merges two csv files
 - `csvop`: applies an arbitrary Python function to every record and saves the return value in a new column
+- `csvrename`: changes the name of a column
 - `csvreorder`: changes the order of columns
 - `csvsed`: applies a substitution rule, using regular expressions, to every value of a column
 - `csvsort`: sorts the input

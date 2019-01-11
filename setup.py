@@ -23,6 +23,7 @@ setup(
             'csvkeepmax = sacsv.csvkeepmax:dispatch',
             'csvleftjoin = sacsv.csvleftjoin:dispatch',
             'csvop = sacsv.csvop:dispatch',
+            'csvrename = sacsv.csvrename:dispatch',
             'csvreorder = sacsv.csvreorder:dispatch',
             'csvsed = sacsv.csvsed:dispatch',
             'csvsort = sacsv.csvsort:dispatch',
