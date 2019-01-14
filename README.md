@@ -18,6 +18,7 @@ The tools are:
 - `csvsed`: applies a substitution rule, using regular expressions, to every value of a column
 - `csvsort`: sorts the input
 - `csvtranspose`: transposes the input
+- `fw2csv`: converts fixed-width input, potentially with multi-line records, into csv
 - `longcsv2wide`: converts the input from long to wide form
 - `widecsv2long`: converts the input from wide to long form
 

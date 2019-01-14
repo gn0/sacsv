@@ -5,13 +5,13 @@ from setuptools import setup
 
 setup(
     name='sacsv',
-    version='1.1',
+    version='1.2',
     description=u'Swiss Army csv: command-line tools to manipulate csv-formatted data',
     author=u'Gabor Nyeki',
     url='http://www.gabornyeki.com/',
     packages=['sacsv'],
     install_requires=['argh'],
-    provides=['sacsv (1.1)'],
+    provides=['sacsv (1.2)'],
     entry_points={
         'console_scripts': [
             'csvaddrandom = sacsv.csvaddrandom:dispatch',
@@ -28,6 +28,7 @@ setup(
             'csvsed = sacsv.csvsed:dispatch',
             'csvsort = sacsv.csvsort:dispatch',
             'csvtranspose = sacsv.csvtranspose:dispatch',
+            'fw2csv = sacsv.fw2csv:dispatch',
             'longcsv2wide = sacsv.longcsv2wide:dispatch',
             'widecsv2long = sacsv.widecsv2long:dispatch',
         ],
