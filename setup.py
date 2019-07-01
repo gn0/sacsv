@@ -11,9 +11,10 @@ setup(
     url='http://www.gabornyeki.com/',
     packages=['sacsv'],
     install_requires=['argh'],
-    provides=['sacsv (1.2)'],
+    provides=['sacsv (1.3)'],
     entry_points={
         'console_scripts': [
+            'csv2jsonl = sacsv.csv2jsonl:dispatch',
             'csvaddrandom = sacsv.csvaddrandom:dispatch',
             'csvadduniqueid = sacsv.csvadduniqueid:dispatch',
             'csvaggregate = sacsv.csvaggregate:dispatch',
