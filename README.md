@@ -4,6 +4,7 @@
 This Python package provides an assortment of command-line tools to manipulate csv-formatted data.
 The tools are:
 
+- `csv2jsonl`: converts csv input into jsonlines
 - `csvaddrandom`: adds a column with a random number
 - `csvadduniqueid`: adds a column with a unique record identifier
 - `csvaggregate`: applies an arbitrary Python function to every value of a column, possibly within groups

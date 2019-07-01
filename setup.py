@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='sacsv',
-    version='1.2',
+    version='1.3',
     description=u'Swiss Army csv: command-line tools to manipulate csv-formatted data',
     author=u'Gabor Nyeki',
     url='http://www.gabornyeki.com/',
