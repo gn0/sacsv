@@ -4,8 +4,9 @@ import csv
 
 
 @argh.arg("-c", "--columns", nargs="+", type=str)
-def main(columns=None):
-    reader = csv.reader(sys.stdin)
+@argh.arg("-d", "--delimiter", type=str, default=",")
+def main(columns=None, delimiter=None):
+    reader = csv.reader(sys.stdin, delimiter=delimiter)
     header = next(reader)
 
     if columns is None:
