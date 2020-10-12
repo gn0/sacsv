@@ -36,19 +36,19 @@ def main():
     for k, column in enumerate(header):
         if (is_ascending(r[k] for r in data)
             or is_descending(r[k] for r in data)):
-            print column
+            print(column)
             sys.exit(0)
 
         try:
             if is_ascending(float(r[k]) for r in data):
-                print column
+                print(column)
                 sys.exit(0)
         except:
             pass
 
         try:
             if is_descending(float(r[k]) for r in data):
-                print column
+                print(column)
                 sys.exit(0)
         except:
             pass
