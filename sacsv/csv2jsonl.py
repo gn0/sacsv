@@ -20,7 +20,7 @@ def main(auto_cast=None):
     for record in reader:
         obj = collections.OrderedDict((k, cast(v) if auto_cast else v)
                                       for k, v in zip(header, record))
-        print json.dumps(obj)
+        print(json.dumps(obj))
 
     sys.stdout.flush()
 
