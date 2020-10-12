@@ -25,7 +25,7 @@ async def run(argv, input):
     output, stderr = await task.communicate(input.encode())
 
     if stderr:
-        print(stderr, file=sys.stderr)
+        print(stderr.decode(), file=sys.stderr)
 
     return output, task.returncode
 
