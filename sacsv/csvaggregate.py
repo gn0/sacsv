@@ -35,20 +35,20 @@ def main(import_mod=None, columns=None, group_by=None, func_def=None):
                                          reader,
                                          key=group_key),
                                      group_key):
-        values = list(list() for k in xrange(len(columns)))
+        values = list(list() for k in range(len(columns)))
 
         for record in record_iter:
-            for k in xrange(len(columns)):
+            for k in range(len(columns)):
                 values[k].append(
                     pickers[k](record))
 
         if group_by is None:
             writer.writerow(
-                tuple(f(values[k]) for k in xrange(len(columns))))
+                tuple(f(values[k]) for k in range(len(columns))))
         else:
             writer.writerow(
                 group_id
-                + tuple(f(values[k]) for k in xrange(len(columns))))
+                + tuple(f(values[k]) for k in range(len(columns))))
 
 
 def dispatch():
