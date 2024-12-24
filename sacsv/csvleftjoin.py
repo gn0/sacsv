@@ -15,7 +15,7 @@ def make_selector(keys, columns):
 def main(join_table=None, keys=None):
     with open(join_table, "r") as f:
         reader = csv.reader(f)
-        join_columns = reader.next()
+        join_columns = next(reader)
         join_selector = make_selector(keys, join_columns)
 
         join_records = dict()
@@ -26,7 +26,7 @@ def main(join_table=None, keys=None):
             join_records[key] += (record,)
 
     reader = csv.reader(sys.stdin)
-    input_columns = reader.next()
+    input_columns = next(reader)
     input_selector = make_selector(keys, input_columns)
 
     columns = (input_columns
