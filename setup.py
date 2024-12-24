@@ -5,14 +5,14 @@ from setuptools import setup
 
 setup(
     name="sacsv",
-    version="1.5",
+    version="1.5.1",
     description=u"Swiss Army csv: command-line tools to manipulate csv-formatted data",
     author=u"Gabor Nyeki",
     url="http://www.gabornyeki.com/",
     packages=["sacsv"],
     install_requires=["argh"],
     python_requires=">=3.5",
-    provides=["sacsv (1.5)"],
+    provides=["sacsv (1.5.1)"],
     entry_points={
         "console_scripts": [
             "csv2jsonl = sacsv.csv2jsonl:dispatch",
