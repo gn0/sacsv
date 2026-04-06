@@ -44,3 +44,6 @@ dev = [
     "pytest>=9.0.2",
     "pytest-cov>=7.0.0",
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101"]
