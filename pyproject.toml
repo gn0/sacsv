@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sacsv"
+version = "1.5.1"
+description = "Swiss Army csv: command-line tools to manipulate csv-formatted data"
+authors = [
+    { name = "Gabor Nyeki", email = "gabor.nyeki@alumni.duke.edu" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "argh>=0.31.3",
+]
+
+[project.scripts]
+csv2jsonl = "sacsv.csv2jsonl:dispatch"
+csvaddrandom = "sacsv.csvaddrandom:dispatch"
+csvadduniqueid = "sacsv.csvadduniqueid:dispatch"
+csvaggregate = "sacsv.csvaggregate:dispatch"
+csvappend = "sacsv.csvappend:dispatch"
+csvdropdups = "sacsv.csvdropdups:dispatch"
+csvfindsortkey = "sacsv.csvfindsortkey:dispatch"
+csvkeepmax = "sacsv.csvkeepmax:dispatch"
+csvleftjoin = "sacsv.csvleftjoin:dispatch"
+csvop = "sacsv.csvop:dispatch"
+csvparallel = "sacsv.csvparallel:dispatch"
+csvrename = "sacsv.csvrename:dispatch"
+csvreorder = "sacsv.csvreorder:dispatch"
+csvsed = "sacsv.csvsed:dispatch"
+csvsort = "sacsv.csvsort:dispatch"
+csvtranspose = "sacsv.csvtranspose:dispatch"
+fw2csv = "sacsv.fw2csv:dispatch"
+longcsv2wide = "sacsv.longcsv2wide:dispatch"
+widecsv2long = "sacsv.widecsv2long:dispatch"
+
+[project.urls]
+Homepage = "https://github.com/gn0/sacsv"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+]
