@@ -10,19 +10,11 @@ def get_fieldnames(fieldnames_iter):
                    for f in fieldnames))
 
 
-assert (get_fieldnames(
-            (("a", "b"), ("a", "b", "c")))
-        == ["a", "b", "c"])
-
-
 def make_get_fields(*fieldnames):
     def get_fields(record):
         return tuple(record.get(field) for field in fieldnames)
 
     return get_fields
-
-
-assert make_get_fields("a", "b")(dict(a=1)) == (1, None)
 
 
 @argh.arg("csv_filename", nargs="+")

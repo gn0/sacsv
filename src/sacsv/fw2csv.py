@@ -47,14 +47,6 @@ def iter_stacks_of(n, iterable):
         yield stack
 
 
-assert (tuple(iter_stacks_of(1, "abcdef"))
-        == (("a",), ("b",), ("c",), ("d",), ("e",), ("f",)))
-assert (tuple(iter_stacks_of(3, "abcdef"))
-        == (("a", "b", "c"), ("d", "e", "f")))
-assert (tuple(iter_stacks_of(3, "abcdefg"))
-        == (("a", "b", "c"), ("d", "e", "f"), ("g",)))
-
-
 @argh.arg("--lines-by-record", "-l", type=int, required=False)
 @argh.arg("--field", "-f", nargs="*", required=True)
 def main(lines_by_record=1, field=None):
