@@ -32,7 +32,13 @@ The tools are:
 
 ## Installation
 
-To install this package using pip, type
+To install this package using uv, type
+
+```
+uv tool install sacsv
+```
+
+or using pip,
 
 ```
 pip install git+https://github.com/gn0/sacsv
