@@ -24,7 +24,7 @@ The tools are:
 - `longcsv2wide`: converts the input from long to wide form
 - `widecsv2long`: converts the input from wide to long form
 
-![Illustration of `csvparallel` executing `f.py` in 8 jobs](examples/csvparallel.png)
+![Illustration of `csvparallel` executing `f.py` in 8 jobs](assets/csvparallel.png)
 
 ## Installation
 
