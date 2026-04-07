@@ -18,6 +18,11 @@ def main(import_mod=None, result_var=None, input_var=None, func_def=None):
 
     reader = csv.reader(sys.stdin)
     columns = next(reader)
+
+    if result_var in columns:
+        msg = f"Column {result_var} already exists in input"
+        raise ValueError(msg)
+
     pickers = tuple(op.itemgetter(columns.index(var)) for var in input_var)
 
     writer = csv.writer(sys.stdout)
