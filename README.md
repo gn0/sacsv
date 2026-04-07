@@ -1,6 +1,10 @@
 
 # sacsv: Swiss Army csv
 
+<p align="center">
+ <img src="https://raw.githubusercontent.com/gn0/sacsv/master/assets/sacsv_300x181.jpg" alt="Swiss Army csv (based on Andrew Toskin's photo distributed under CC BY-SA 4.0)" />
+</p>
+
 This Python package provides an assortment of command-line tools to manipulate csv-formatted data.
 The tools are:
 
@@ -48,4 +52,6 @@ Gabor Nyeki.  Contact information is on http://www.gabornyeki.com/.
 ## License
 
 This package is licensed under the Creative Commons Attribution 4.0 International License: http://creativecommons.org/licenses/by/4.0/.
+
+The picture at the top of this README is based on [Andrew Toskin's 2014 photo](https://www.flickr.com/photos/100030176@N02/15554551505) which is distributed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en).
 
