@@ -56,7 +56,7 @@ def main(lines_by_record=1, field=None):
     writer.writerow(
         tuple(name for name in fields))
     writer.writerows(
-        tuple(extractor(lines) for extractor in fields.itervalues())
+        tuple(extractor(lines) for extractor in fields.values())
         for lines in iter_stacks_of(lines_by_record, sys.stdin))
 
 
