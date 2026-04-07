@@ -27,15 +27,12 @@ def main(import_mod=None, result_var=None, input_var=None, func_def=None):
     for i, record in enumerate(reader, 2):
         try:
             result = f(*tuple(pick_from(record) for pick_from in pickers))
-        except:
-            import six
-
-            exception, value, traceback = sys.exc_info()
-            six.reraise(
-                type(value),
-                type(value)("Result variable %s, %s, line %d: %s"
-                            % (result_var, func_def, i, str(value))),
-                traceback)
+        except Exception as e:
+            msg = (
+                f"Result variable {result_var}, {func_def}, line {i}: "
+                f"{str(e)}"
+            )
+            raise type(e)(msg) from e
 
         writer.writerow(
             record + [result])
