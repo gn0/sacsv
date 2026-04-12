@@ -1,4 +1,4 @@
-import argh
+import click
 import importlib
 import csv
 import sys
@@ -6,10 +6,6 @@ import operator as op
 import itertools as it
 
 
-@argh.arg("-m", "--import-mod", type=str, nargs="+", required=False)
-@argh.arg("-c", "--columns", type=str, nargs="+", required=True)
-@argh.arg("-g", "--group-by", type=str, nargs="+", required=False)
-@argh.arg("-f", "--func-def", type=str, required=True)
 def main(import_mod=None, columns=None, group_by=None, func_def=None):
     for m in import_mod or tuple():
         globals()[m.split(".")[0]] = importlib.import_module(m.split(".")[0])
@@ -51,9 +47,52 @@ def main(import_mod=None, columns=None, group_by=None, func_def=None):
                 + tuple(f(values[k]) for k in range(len(columns))))
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-m",
+    "--import-mod",
+    type=str,
+    multiple=True,
+    metavar="MODULE_NAME",
+    help="Python module to import before processing (e.g., 'math')",
+)
+@click.option(
+    "-c",
+    "--columns",
+    type=str,
+    multiple=True,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Names of columns to aggregate",
+)
+@click.option(
+    "-g",
+    "--group-by",
+    type=str,
+    multiple=True,
+    metavar="COLUMN_NAME",
+    help="Names of one or more columns to group rows by",
+)
+@click.option(
+    "-f",
+    "--func-def",
+    # TODO Add -a/--auto-cast to convert values to float before feeding
+    # them to the function in `func_def`.
+    type=str,
+    required=True,
+    metavar="PYTHON_FUNC",
+    help="Python function definition",
+)
+def cli(import_mod=None, columns=None, group_by=None, func_def=None):
+    """Apply a Python function to aggregate groups of rows"""
+    main(
+        import_mod=import_mod,
+        columns=columns,
+        group_by=group_by,
+        func_def=func_def,
+    )
 
 
 if __name__ == "__main__":
-    dispatch()
+    main()

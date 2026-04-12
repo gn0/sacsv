@@ -1,4 +1,4 @@
-import argh
+import click
 import csv
 import sys
 
@@ -54,9 +54,12 @@ def main():
             pass
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+def cli():
+    """Find the column by which the input is sorted"""
+    main()
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

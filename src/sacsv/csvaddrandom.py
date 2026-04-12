@@ -1,11 +1,9 @@
-import argh
+import click
 import random
 import csv
 import sys
 
 
-@argh.arg("-s", "--seed", type=int, required=True)
-@argh.arg("-c", "--column-name", type=str, required=True)
 def main(column_name=None, seed=None):
     random.seed(seed)
 
@@ -21,9 +19,27 @@ def main(column_name=None, seed=None):
             record + [random.randint(1, 2**31)])
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-s",
+    "--seed",
+    type=int,
+    required=True,
+    help="Random seed for reproducibility",
+)
+@click.option(
+    "-c",
+    "--column-name",
+    type=str,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Name of the new column",
+)
+def cli(column_name=None, seed=None):
+    """Add a new column that contains a random integer"""
+    main(column_name=column_name, seed=seed)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

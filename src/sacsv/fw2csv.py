@@ -1,4 +1,4 @@
-import argh
+import click
 import re
 import csv
 import sys
@@ -47,9 +47,7 @@ def iter_stacks_of(n, iterable):
         yield stack
 
 
-@argh.arg("--lines-by-record", "-l", type=int, required=False)
-@argh.arg("--field", "-f", nargs="*", required=True)
-def main(lines_by_record=1, field=None):
+def main(lines_by_record=None, field=None):
     fields = get_multiline_extractors(field)
 
     writer = csv.writer(sys.stdout)
@@ -60,9 +58,46 @@ def main(lines_by_record=1, field=None):
         for lines in iter_stacks_of(lines_by_record, sys.stdin))
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-l",
+    "--lines-by-record",
+    type=int,
+    default=1,
+    help="Number of lines per record in the fixed-width input",
+)
+@click.option(
+    "-f",
+    "--field",
+    multiple=True,
+    required=True,
+    metavar="FIELD_SPEC",
+    help="Field specification mapping fixed-width input to CSV column",
+)
+def cli(lines_by_record=None, field=None):
+    """Extract CSV columns from fixed-width input
+
+    Examples:
+
+      One line per record in the fixed-width data:
+
+    \b
+        $ printf 'foo    1\\nbar    2\\n' | fw2csv -f 1-4:a -f 5-8:b
+        a,b
+        foo ,   1
+        bar ,   2
+
+      Two lines per record in the fixed-width data:
+
+    \b
+        $ printf 'foo    1\\nbar    2\\n' \\
+          | fw2csv -l 2 -f 1-4:a -f 5-8:b -f 2:1-4:c -f 2:5-8:d
+        a,b,c,d
+        foo ,   1,bar ,   2
+    """
+    main(lines_by_record=lines_by_record, field=field)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

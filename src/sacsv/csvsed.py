@@ -1,12 +1,9 @@
-import argh
+import click
 import sys
 import csv
 import re
 
 
-@argh.arg("-c", "--columns", type=str, nargs="+", required=True)
-@argh.arg("-p", "--pattern", type=str, required=True)
-@argh.arg("-t", "--to", type=str, required=True)
 def main(columns=None, pattern=None, to=None):
     reader = csv.reader(sys.stdin)
     header = next(reader)
@@ -22,9 +19,53 @@ def main(columns=None, pattern=None, to=None):
                   for k, value in enumerate(record)))
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-c",
+    "--columns",
+    type=str,
+    multiple=True,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Names of one or more columns to perform substitution on",
+)
+@click.option(
+    "-p",
+    "--pattern",
+    type=str,
+    required=True,
+    metavar="REGEX",
+    help="Pattern to substitute",
+)
+@click.option(
+    "-t",
+    "--to",
+    type=str,
+    required=True,
+    help="String to replace matches with",
+)
+def cli(columns=None, pattern=None, to=None):
+    """Perform string substitution based on a regular expression
+
+    Examples:
+
+      Substitution in one column:
+
+    \b
+        $ printf 'a,b\\nfoo,bar\\n' | csvsed -c b -p '[fb]' -t 't'
+        a,b
+        foo,tar
+
+      Substitution in two columns:
+
+    \b
+        $ printf 'a,b\\nfoo,bar\\n' | csvsed -c a -c b -p '[fb]' -t 't'
+        a,b
+        too,tar
+    """
+    main(columns=columns, pattern=pattern, to=to)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

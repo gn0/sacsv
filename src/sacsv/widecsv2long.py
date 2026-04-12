@@ -1,4 +1,4 @@
-import argh
+import click
 import sys
 import csv
 import re
@@ -15,9 +15,6 @@ def drop_dups(iterable):
             yield item
 
 
-@argh.arg("-v", "--var-re", type=str, nargs="+")
-@argh.arg("-r", "--repeat-var-re", type=str, nargs="+")
-@argh.arg("-i", "--index-name", type=str, required=True)
 def main(var_re=None, repeat_var_re=None, index_name=None):
     # Compile patterns.
     #
@@ -121,9 +118,57 @@ def main(var_re=None, repeat_var_re=None, index_name=None):
                     + repeat_var_values)
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-v",
+    "--var-re",
+    type=str,
+    multiple=True,
+    required=True,
+    metavar="REGEX",
+    help="Patterns for column names that uniquely identify wide row",
+)
+@click.option(
+    "-r",
+    "--repeat-var-re",
+    type=str,
+    multiple=True,
+    required=True,
+    metavar="REGEX",
+    help="Patterns for column names containing variable name and index",
+)
+@click.option(
+    "-i",
+    "--index-name",
+    type=str,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Name of the new column that contains the value index",
+)
+def cli(var_re=None, repeat_var_re=None, index_name=None):
+    """Convert a CSV from 'wide' to 'long' form
+
+    Example:
+
+    \b
+      $ cat input.csv
+      student,score_math,score_history
+      A,73,64
+      B,30,52
+      $ widecsv2long -v '^student$' -r '^(score)_(.*)' -i subject < input.csv
+      student,subject,score
+      A,history,64
+      A,math,73
+      B,history,52
+      B,math,30
+    """
+    main(
+        var_re=var_re,
+        repeat_var_re=repeat_var_re,
+        index_name=index_name,
+    )
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

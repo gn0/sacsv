@@ -1,4 +1,4 @@
-import argh
+import click
 import sys
 import csv
 import itertools as it
@@ -11,9 +11,6 @@ def make_picker(index):
     return f
 
 
-@argh.arg("-w", "--within", type=str, nargs="+", required=True)
-@argh.arg("-i", "--index-vars", type=str, nargs="+", required=True)
-@argh.arg("-v", "--vars", type=str, nargs="+", required=True)
 def main(within=None, index_vars=None, vars=None):
     reader = csv.reader(sys.stdin)
     header = next(reader)
@@ -86,9 +83,54 @@ def main(within=None, index_vars=None, vars=None):
             + long_values)
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-w",
+    "--within",
+    type=str,
+    multiple=True,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Names of one or more columns that uniquely identify wide row",
+)
+@click.option(
+    "-i",
+    "--index-vars",
+    type=str,
+    multiple=True,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Names of one or more columns that contain value indices",
+)
+@click.option(
+    "-v",
+    "--vars",
+    type=str,
+    multiple=True,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Names of one or more columns that contain values",
+)
+def cli(within=None, index_vars=None, vars=None):
+    """Convert a CSV from 'long' to 'wide' form
+
+    Example:
+
+    \b
+      $ cat input.csv
+      student,subject,score
+      A,math,73
+      A,history,64
+      B,math,30
+      B,history,52
+      $ longcsv2wide -w student -i subject -v score < input.csv
+      student,score_math,score_history
+      A,73,64
+      B,30,52
+    """
+    main(within=within, index_vars=index_vars, vars=vars)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

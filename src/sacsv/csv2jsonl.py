@@ -1,4 +1,4 @@
-import argh
+import click
 import csv
 import json
 import sys
@@ -12,7 +12,6 @@ def cast(obj):
         return obj
 
 
-@argh.arg("-a", "--auto-cast", default=False)
 def main(auto_cast=None):
     reader = csv.reader(sys.stdin)
     header = next(reader)
@@ -25,9 +24,19 @@ def main(auto_cast=None):
     sys.stdout.flush()
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "--auto-cast",
+    "-a",
+    is_flag=True,
+    default=False,
+    help="Automatically cast values to float when possible",
+)
+def cli(auto_cast=None):
+    """Convert CSV to JSON lines"""
+    main(auto_cast)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

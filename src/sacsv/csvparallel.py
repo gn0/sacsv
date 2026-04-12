@@ -5,7 +5,7 @@ import asyncio
 import math
 import io
 
-import argh
+import click
 
 
 async def run(argv, input):
@@ -93,7 +93,6 @@ async def command_dispatcher(jobs, command, args, header, rows):
     return output, exit_codes
 
 
-@argh.arg("-j", "--jobs", type=int, default=mp.cpu_count())
 def main(command, *args, jobs=None):
     reader = csv.reader(sys.stdin)
 
@@ -110,9 +109,19 @@ def main(command, *args, jobs=None):
     sys.exit(max(exit_codes))
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-j",
+    "--jobs",
+    type=int,
+    default=mp.cpu_count(),
+    help="Number of jobs to launch in parallel",
+)
+def cli(command, *args, jobs=None):
+    """Feed CSV rows to command in parallel"""
+    main(command=command, *args, jobs=jobs)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

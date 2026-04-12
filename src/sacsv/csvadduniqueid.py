@@ -1,12 +1,9 @@
-import argh
+import click
 import sys
 import csv
 import itertools as it
 
 
-@argh.arg("-g", "--group-by", type=str, nargs="+")
-@argh.arg("-s", "--sort-by", type=str, nargs="+")
-@argh.arg("-c", "--column-name", type=str, required=True)
 def main(group_by=None, sort_by=None, column_name=None):
     reader = csv.reader(sys.stdin)
     header = next(reader)
@@ -35,9 +32,36 @@ def main(group_by=None, sort_by=None, column_name=None):
                 [k] + record)
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-g",
+    "--group-by",
+    type=str,
+    multiple=True,
+    metavar="COLUMN_NAME",
+    help="Names of one or more columns to group rows by",
+)
+@click.option(
+    "-s",
+    "--sort-by",
+    type=str,
+    multiple=True,
+    metavar="COLUMN_NAME",
+    help="One or more column names to sort rows by in each group",
+)
+@click.option(
+    "-c",
+    "--column-name",
+    type=str,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Name of the new column",
+)
+def cli(group_by=None, sort_by=None, column_name=None):
+    """Add a new column that contains a unique ID for each row"""
+    main(group_by=group_by, sort_by=sort_by, column_name=column_name)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

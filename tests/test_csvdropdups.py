@@ -1,6 +1,5 @@
 import io
 
-import argh
 import pytest
 
 import sacsv.csvdropdups as m
@@ -72,8 +71,12 @@ def test_two_keys(monkeypatch, capsys):
 
 
 def test_must_specify_keep_first_xor_keep_last():
-    with pytest.raises(argh.CommandError):
+    with pytest.raises(SystemExit) as exception:
         m.main(key=["a"], keep_first=["b"], keep_last=["c"])
 
-    with pytest.raises(argh.CommandError):
+    assert exception.value.code == 1
+
+    with pytest.raises(SystemExit) as exception:
         m.main(key=["a"], keep_first=None, keep_last=None)
+
+    assert exception.value.code == 1

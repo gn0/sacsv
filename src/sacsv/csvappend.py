@@ -1,4 +1,4 @@
-import argh
+import click
 import csv
 import sys
 
@@ -17,7 +17,6 @@ def make_get_fields(*fieldnames):
     return get_fields
 
 
-@argh.arg("csv_filename", nargs="+")
 def main(csv_filename):
     dict_readers = tuple(csv.DictReader(open(filename, "r"))
                          for filename in csv_filename)
@@ -36,9 +35,19 @@ def main(csv_filename):
     sys.stdout.flush()
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.argument(
+    "csv_filename",
+    nargs=-1,
+    required=True,
+    type=click.Path(exists=True),
+    metavar="PATH...",
+)
+def cli(csv_filename):
+    """Append several CSV files, taking the union of their columns"""
+    main(csv_filename)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

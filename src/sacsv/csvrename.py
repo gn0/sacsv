@@ -1,4 +1,4 @@
-import argh
+import click
 import csv
 import sys
 
@@ -19,9 +19,24 @@ def main(column, new_column):
     writer.writerows(reader)
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.argument(
+    "column",
+    required=True,
+    type=str,
+    metavar="COLUMN_NAME",
+)
+@click.argument(
+    "new_column",
+    required=True,
+    type=str,
+    metavar="NEW_COLUMN_NAME",
+)
+def cli(column, new_column):
+    """Rename a column"""
+    main(column, new_column)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

@@ -1,15 +1,11 @@
-import argh
+import click
 import importlib
 import csv
 import sys
 import operator as op
 
 
-@argh.arg("-m", "--import-mod", type=str, nargs="+", required=False)
-@argh.arg("-i", "--input-var", type=str, nargs="+", required=True)
-@argh.arg("-r", "--result-var", type=str, required=True)
-@argh.arg("-f", "--func-def", type=str, required=True)
-def main(import_mod=None, result_var=None, input_var=None, func_def=None):
+def main(input_var, result_var, func_def, import_mod=None):
     for m in import_mod or tuple():
         globals()[m.split(".")[0]] = importlib.import_module(m.split(".")[0])
         importlib.import_module(m)
@@ -43,9 +39,52 @@ def main(import_mod=None, result_var=None, input_var=None, func_def=None):
             record + [result])
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-m",
+    "--import-mod",
+    type=str,
+    multiple=True,
+    metavar="MODULE_NAME",
+    help="Python module to import before processing (e.g., 'math')",
+)
+@click.option(
+    "-i",
+    "--input-var",
+    type=str,
+    multiple=True,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Names of columns to use as arguments to Python function",
+)
+@click.option(
+    "-r",
+    "--result-var",
+    type=str,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Name of new column to save function output to",
+)
+@click.option(
+    "-f",
+    "--func-def",
+    # TODO Add -a/--auto-cast to convert values to float before feeding
+    # them to the function in `func_def`.
+    type=str,
+    required=True,
+    metavar="PYTHON_FUNC",
+    help="Python function definition",
+)
+def cli(import_mod=None, input_var=None, result_var=None, func_def=None):
+    """Apply a Python function to one or more columns"""
+    main(
+        input_var=input_var,
+        result_var=result_var,
+        func_def=func_def,
+        import_mod=import_mod,
+    )
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

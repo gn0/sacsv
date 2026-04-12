@@ -1,4 +1,4 @@
-import argh
+import click
 import csv
 import sys
 
@@ -10,8 +10,6 @@ def make_selector(keys, columns):
     return selector
 
 
-@argh.arg("--join-table", "-j", type=str, required=True)
-@argh.arg("--keys", "-k", nargs="+", type=str, required=True)
 def main(join_table=None, keys=None):
     with open(join_table, "r") as f:
         reader = csv.reader(f)
@@ -51,9 +49,29 @@ def main(join_table=None, keys=None):
                                       if column not in keys])
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-j",
+    "--join-table",
+    type=click.Path(exists=True),
+    required=True,
+    metavar="PATH",
+    help="Path to CSV file to join",
+)
+@click.option(
+    "-k",
+    "--keys",
+    type=str,
+    multiple=True,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Names of one or more columns to join rows by",
+)
+def cli(join_table=None, keys=None):
+    """Perform a LEFT JOIN between two CSV files"""
+    main(join_table=join_table, keys=keys)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

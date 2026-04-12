@@ -1,11 +1,9 @@
-import argh
+import click
 import csv
 import sys
 import itertools as it
 
 
-@argh.arg("-g", "--group-by", nargs="+", type=str, required=False)
-@argh.arg("-c", "--column", type=str, required=True)
 def main(group_by=None, column=None):
     reader = csv.reader(sys.stdin)
     header = next(reader)
@@ -44,9 +42,28 @@ def main(group_by=None, column=None):
             writer.writerows(maximizers)
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-g",
+    "--group-by",
+    type=str,
+    multiple=True,
+    metavar="COLUMN_NAME",
+    help="Names of one or more columns to group rows by",
+)
+@click.option(
+    "-c",
+    "--column",
+    type=str,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Name of column by which to find maximum value",
+)
+def cli(group_by=None, column=None):
+    """Keep the row that has the maximum value in a column"""
+    main(group_by=group_by, column=column)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()

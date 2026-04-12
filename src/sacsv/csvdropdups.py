@@ -1,4 +1,4 @@
-import argh
+import click
 import csv
 import sys
 import itertools as it
@@ -14,17 +14,20 @@ def make_key(key_columns, columns):
         return key
 
 
-@argh.arg("-k", "--key", type=str, nargs="+", required=True)
-@argh.arg("-f", "--keep-first", type=str, nargs="*")
-@argh.arg("-l", "--keep-last", type=str, nargs="*")
 def main(key=None, keep_first=None, keep_last=None):
     if keep_first is None and keep_last is None:
-        raise argh.CommandError(
-                  "Must specify either --keep-first or --keep-last.")
+        click.echo(
+            "error: Must specify either --keep-first or --keep-last.",
+            err=True,
+        )
+        sys.exit(1)
     elif keep_first is not None and keep_last is not None:
-        raise argh.CommandError(
-                  "Must specify either --keep-first or --keep-last "
-                  + "but not both.")
+        click.echo(
+            "error: Must specify either --keep-first or --keep-last "
+            "but not both.",
+            err=True,
+        )
+        sys.exit(1)
 
     reader = csv.reader(sys.stdin)
     columns = next(reader)
@@ -52,9 +55,43 @@ def main(key=None, keep_first=None, keep_last=None):
             writer.writerow(items[-1])
 
 
-def dispatch():
-    argh.dispatch_command(main)
+@click.command()
+@click.help_option("-h", "--help", help="Show this message and exit")
+@click.option(
+    "-k",
+    "--key",
+    type=str,
+    multiple=True,
+    required=True,
+    metavar="COLUMN_NAME",
+    help="Names of one or more columns to define duplicates by",
+)
+@click.option(
+    "-f",
+    "--keep-first",
+    type=str,
+    multiple=True,
+    metavar="COLUMN_NAME",
+    help=(
+        "Keep the first instance after sorting duplicates by these "
+        "columns"
+    ),
+)
+@click.option(
+    "-l",
+    "--keep-last",
+    type=str,
+    multiple=True,
+    metavar="COLUMN_NAME",
+    help=(
+        "Keep the last instance after sorting duplicates by these "
+        "columns"
+    ),
+)
+def cli(key=None, keep_first=None, keep_last=None):
+    """Drop duplicate rows"""
+    main(key=key, keep_first=keep_first, keep_last=keep_last)
 
 
 if __name__ == "__main__":
-    dispatch()
+    cli()
