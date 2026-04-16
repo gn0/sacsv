@@ -3,6 +3,8 @@ import sys
 import csv
 import itertools as it
 
+from sacsv import MultiValueOption
+
 
 def make_picker(index):
     def f(r):
@@ -88,28 +90,28 @@ def main(within=None, index_vars=None, vars=None):
 @click.option(
     "-w",
     "--within",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="COLUMN_NAME",
+    metavar="COLUMN_NAME...",
     help="Names of one or more columns that uniquely identify wide row",
 )
 @click.option(
     "-i",
     "--index-vars",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="COLUMN_NAME",
+    metavar="COLUMN_NAME...",
     help="Names of one or more columns that contain value indices",
 )
 @click.option(
     "-v",
     "--vars",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="COLUMN_NAME",
+    metavar="COLUMN_NAME...",
     help="Names of one or more columns that contain values",
 )
 def cli(within=None, index_vars=None, vars=None):

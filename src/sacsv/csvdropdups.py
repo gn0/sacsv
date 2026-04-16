@@ -3,6 +3,8 @@ import csv
 import sys
 import itertools as it
 
+from sacsv import MultiValueOption
+
 
 def make_key(key_columns, columns):
     if len(key_columns) == 0:
@@ -60,18 +62,18 @@ def main(key=None, keep_first=None, keep_last=None):
 @click.option(
     "-k",
     "--key",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="COLUMN_NAME",
+    metavar="COLUMN_NAME...",
     help="Names of one or more columns to define duplicates by",
 )
 @click.option(
     "-f",
     "--keep-first",
-    type=str,
-    multiple=True,
-    metavar="COLUMN_NAME",
+    type=list[str],
+    cls=MultiValueOption,
+    metavar="COLUMN_NAME...",
     help=(
         "Keep the first instance after sorting duplicates by these "
         "columns"
@@ -80,9 +82,9 @@ def main(key=None, keep_first=None, keep_last=None):
 @click.option(
     "-l",
     "--keep-last",
-    type=str,
-    multiple=True,
-    metavar="COLUMN_NAME",
+    type=list[str],
+    cls=MultiValueOption,
+    metavar="COLUMN_NAME...",
     help=(
         "Keep the last instance after sorting duplicates by these "
         "columns"

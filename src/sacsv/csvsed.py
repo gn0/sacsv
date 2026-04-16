@@ -3,6 +3,8 @@ import sys
 import csv
 import re
 
+from sacsv import MultiValueOption
+
 
 def main(columns=None, pattern=None, to=None):
     reader = csv.reader(sys.stdin)
@@ -24,10 +26,10 @@ def main(columns=None, pattern=None, to=None):
 @click.option(
     "-c",
     "--columns",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="COLUMN_NAME",
+    metavar="COLUMN_NAME...",
     help="Names of one or more columns to perform substitution on",
 )
 @click.option(
@@ -60,7 +62,7 @@ def cli(columns=None, pattern=None, to=None):
       Substitution in two columns:
 
     \b
-        $ printf 'a,b\\nfoo,bar\\n' | csvsed -c a -c b -p '[fb]' -t 't'
+        $ printf 'a,b\\nfoo,bar\\n' | csvsed -c a b -p '[fb]' -t 't'
         a,b
         too,tar
     """

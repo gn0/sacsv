@@ -4,6 +4,8 @@ import csv
 import re
 import operator as op
 
+from sacsv import MultiValueOption
+
 
 def drop_dups(iterable):
     seen = set()
@@ -123,19 +125,19 @@ def main(var_re=None, repeat_var_re=None, index_name=None):
 @click.option(
     "-v",
     "--var-re",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="REGEX",
+    metavar="REGEX...",
     help="Patterns for column names that uniquely identify wide row",
 )
 @click.option(
     "-r",
     "--repeat-var-re",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="REGEX",
+    metavar="REGEX...",
     help="Patterns for column names containing variable name and index",
 )
 @click.option(

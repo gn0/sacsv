@@ -4,6 +4,8 @@ import csv
 import sys
 import operator as op
 
+from sacsv import MultiValueOption
+
 
 def main(input_var, result_var, func_def, import_mod=None):
     for m in import_mod or tuple():
@@ -45,17 +47,17 @@ def main(input_var, result_var, func_def, import_mod=None):
     "-m",
     "--import-mod",
     type=str,
-    multiple=True,
-    metavar="MODULE_NAME",
-    help="Python module to import before processing (e.g., 'math')",
+    cls=MultiValueOption,
+    metavar="MODULE_NAME...",
+    help="Names of Python modules to import (e.g., 'math')",
 )
 @click.option(
     "-i",
     "--input-var",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="COLUMN_NAME",
+    metavar="COLUMN_NAME...",
     help="Names of columns to use as arguments to Python function",
 )
 @click.option(

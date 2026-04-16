@@ -2,6 +2,8 @@ import click
 import csv
 import sys
 
+from sacsv import MultiValueOption
+
 
 def make_selector(keys, columns):
     def selector(record):
@@ -62,10 +64,10 @@ def main(join_table=None, keys=None):
 @click.option(
     "-k",
     "--keys",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="COLUMN_NAME",
+    metavar="COLUMN_NAME...",
     help="Names of one or more columns to join rows by",
 )
 def cli(join_table=None, keys=None):

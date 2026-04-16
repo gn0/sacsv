@@ -3,7 +3,7 @@ revision = 3
 requires-python = ">=3.10"
 
 [options]
-exclude-newer = "2026-01-12T07:19:39.622260044Z"
+exclude-newer = "2026-01-14T04:56:50.867176133Z"
 exclude-newer-span = "P90D"
 
 [[package]]
@@ -226,7 +226,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "click", specifier = ">=8.3.1" }]
+requires-dist = [{ name = "click", specifier = ">=8.3.1,<9.0.0" }]
 
 [package.metadata.requires-dev]
 dev = [

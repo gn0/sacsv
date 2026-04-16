@@ -12,7 +12,10 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "click>=8.3.1",
+    # Click 9.0 will remove `click.parser._OptionParser` which is
+    # currently used by `sacsv.MultiValueOption`.
+    #
+    "click >= 8.3.1, < 9.0.0",
 ]
 
 [project.scripts]

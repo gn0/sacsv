@@ -4,6 +4,7 @@ import csv
 import sys
 
 from collections import OrderedDict
+from sacsv import MultiValueOption
 
 
 def parse_multiline_field_def(string):
@@ -70,10 +71,11 @@ def main(lines_by_record=None, field=None):
 @click.option(
     "-f",
     "--field",
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="FIELD_SPEC",
-    help="Field specification mapping fixed-width input to CSV column",
+    metavar="FIELD_SPEC...",
+    help="Field specifications mapping fixed-width input to CSV column",
 )
 def cli(lines_by_record=None, field=None):
     """Extract CSV columns from fixed-width input
@@ -83,7 +85,7 @@ def cli(lines_by_record=None, field=None):
       One line per record in the fixed-width data:
 
     \b
-        $ printf 'foo    1\\nbar    2\\n' | fw2csv -f 1-4:a -f 5-8:b
+        $ printf 'foo    1\\nbar    2\\n' | fw2csv -f 1-4:a 5-8:b
         a,b
         foo ,   1
         bar ,   2
@@ -92,7 +94,7 @@ def cli(lines_by_record=None, field=None):
 
     \b
         $ printf 'foo    1\\nbar    2\\n' \\
-          | fw2csv -l 2 -f 1-4:a -f 5-8:b -f 2:1-4:c -f 2:5-8:d
+          | fw2csv -l 2 -f 1-4:a 5-8:b 2:1-4:c 2:5-8:d
         a,b,c,d
         foo ,   1,bar ,   2
     """

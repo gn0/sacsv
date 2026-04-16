@@ -2,6 +2,8 @@ import click
 import sys
 import csv
 
+from sacsv import MultiValueOption
+
 
 def main(columns=None, delimiter=None):
     reader = csv.reader(sys.stdin, delimiter=delimiter)
@@ -25,9 +27,9 @@ def main(columns=None, delimiter=None):
 @click.option(
     "-c",
     "--columns",
-    type=str,
-    multiple=True,
-    metavar="COLUMN_NAME",
+    type=list[str],
+    cls=MultiValueOption,
+    metavar="COLUMN_NAME...",
     help="Names of one or more columns to sort rows by",
 )
 @click.option(

@@ -5,6 +5,8 @@ import sys
 import operator as op
 import itertools as it
 
+from sacsv import MultiValueOption
+
 
 def main(import_mod=None, columns=None, group_by=None, func_def=None):
     for m in import_mod or tuple():
@@ -52,26 +54,26 @@ def main(import_mod=None, columns=None, group_by=None, func_def=None):
 @click.option(
     "-m",
     "--import-mod",
-    type=str,
-    multiple=True,
-    metavar="MODULE_NAME",
-    help="Python module to import before processing (e.g., 'math')",
+    type=list[str],
+    cls=MultiValueOption,
+    metavar="MODULE_NAME...",
+    help="Names of Python modules to import (e.g., 'math')",
 )
 @click.option(
     "-c",
     "--columns",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="COLUMN_NAME",
+    metavar="COLUMN_NAME...",
     help="Names of columns to aggregate",
 )
 @click.option(
     "-g",
     "--group-by",
-    type=str,
-    multiple=True,
-    metavar="COLUMN_NAME",
+    type=list[str],
+    cls=MultiValueOption,
+    metavar="COLUMN_NAME...",
     help="Names of one or more columns to group rows by",
 )
 @click.option(

@@ -3,6 +3,8 @@ import csv
 import sys
 import itertools as it
 
+from sacsv import MultiValueOption
+
 
 def main(group_by=None, column=None):
     reader = csv.reader(sys.stdin)
@@ -47,9 +49,9 @@ def main(group_by=None, column=None):
 @click.option(
     "-g",
     "--group-by",
-    type=str,
-    multiple=True,
-    metavar="COLUMN_NAME",
+    type=list[str],
+    cls=MultiValueOption,
+    metavar="COLUMN_NAME...",
     help="Names of one or more columns to group rows by",
 )
 @click.option(

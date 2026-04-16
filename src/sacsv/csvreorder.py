@@ -2,6 +2,8 @@ import click
 import sys
 import csv
 
+from sacsv import MultiValueOption
+
 
 def main(column_order=None):
     reader = csv.DictReader(sys.stdin)
@@ -27,10 +29,10 @@ def main(column_order=None):
 @click.option(
     "-c",
     "--column-order",
-    type=str,
-    multiple=True,
+    type=list[str],
+    cls=MultiValueOption,
     required=True,
-    metavar="COLUMN_NAME",
+    metavar="COLUMN_NAME...",
     help="Names of one or more columns in the order to print them",
 )
 def cli(column_order=None):
