@@ -37,7 +37,17 @@ def main(column_name=None, seed=None):
     help="Name of the new column",
 )
 def cli(column_name=None, seed=None):
-    """Add a new column that contains a random integer"""
+    """Add a new column that contains a random integer
+
+    Example:
+
+    \b
+      $ printf 'a\\n1\\n2\\n3\\n' | csvaddrandom -s 1 -c b
+      a,b
+      1,577090038
+      2,271041746
+      3,1095513149
+    """
     main(column_name=column_name, seed=seed)
 
 

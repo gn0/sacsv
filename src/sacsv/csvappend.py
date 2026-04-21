@@ -45,7 +45,26 @@ def main(csv_filename):
     metavar="PATH...",
 )
 def cli(csv_filename):
-    """Append several CSV files, taking the union of their columns"""
+    """Append several CSV files, taking the union of their columns
+
+    Example:
+
+    \b
+      $ cat input_1.csv
+      a
+      1
+      2
+      $ cat input_2.csv
+      a,b
+      3,5
+      4,6
+      $ csvappend input_1.csv input_2.csv
+      a,b
+      1,
+      2,
+      3,5
+      4,6
+    """
     main(csv_filename)
 
 

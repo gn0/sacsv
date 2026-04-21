@@ -71,7 +71,24 @@ def main(join_table=None, keys=None):
     help="Names of one or more columns to join rows by",
 )
 def cli(join_table=None, keys=None):
-    """Perform a LEFT JOIN between two CSV files"""
+    """Perform a LEFT JOIN between two CSV files
+
+    Example:
+
+    \b
+      $ cat input.csv
+      a,c
+      1,10
+      1,11
+      2,20
+      3,30
+      $ printf 'a,b\\n1,a\\n2,b\\n4,d\\n' | csvleftjoin -j input.csv -k a
+      a,b,c
+      1,a,10
+      1,a,11
+      2,b,20
+      4,d,
+    """
     main(join_table=join_table, keys=keys)
 
 

@@ -63,7 +63,27 @@ def main(group_by=None, column=None):
     help="Name of column by which to find maximum value",
 )
 def cli(group_by=None, column=None):
-    """Keep the row that has the maximum value in a column"""
+    """Keep the row that has the maximum value in a column
+
+    Examples:
+
+      Keeping rows that contain the global maximum:
+
+    \b
+        $ printf 'a,b\\n1,1\\n1,2\\n2,2\\n3,1\\n' | csvkeepmax -c b
+        a,b
+        1,2
+        2,2
+
+      Keeping rows that contain their group's maximum:
+
+    \b
+        $ printf 'a,b\\n1,1\\n1,2\\n2,2\\n3,1\\n' | csvkeepmax -c b -g a
+        a,b
+        1,2
+        2,2
+        3,1
+    """
     main(group_by=group_by, column=column)
 
 

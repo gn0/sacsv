@@ -61,7 +61,41 @@ def main(group_by=None, sort_by=None, column_name=None):
     help="Name of the new column",
 )
 def cli(group_by=None, sort_by=None, column_name=None):
-    """Add a new column that contains a unique ID for each row"""
+    """Add a new column that contains a unique ID for each row
+
+    Examples:
+
+      Globally unique ID:
+
+    \b
+        $ printf 'a,b\\n1,4\\n2,3\\n2,4\\n1,3\\n' | csvadduniqueid -c id
+        id,a,b
+        1,1,4
+        2,2,3
+        3,2,4
+        4,1,3
+
+      ID that is unique within group:
+
+    \b
+        $ printf 'a,b\\n1,4\\n2,3\\n2,4\\n1,3\\n' | csvadduniqueid -c id -g a
+        id,a,b
+        1,1,4
+        2,1,3
+        1,2,3
+        2,2,4
+
+      ID that is increasing in column:
+
+    \b
+        $ printf 'a,b\\n1,4\\n2,3\\n2,4\\n1,3\\n' \\
+          | csvadduniqueid -c id -g a -s b
+        id,a,b
+        1,1,3
+        2,1,4
+        1,2,3
+        2,2,4
+    """
     main(group_by=group_by, sort_by=sort_by, column_name=column_name)
 
 

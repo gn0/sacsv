@@ -36,7 +36,16 @@ def main(column_order=None):
     help="Names of one or more columns in the order to print them",
 )
 def cli(column_order=None):
-    """Change the order of CSV columns"""
+    """Change the order of CSV columns
+
+    Example:
+
+    \b
+      $ printf 'a,b\\n1,2\\n3,4\\n' | csvreorder -c b a
+      b,a
+      2,1
+      4,3
+    """
     main(column_order)
 
 

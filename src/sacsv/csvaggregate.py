@@ -87,7 +87,27 @@ def main(import_mod=None, columns=None, group_by=None, func_def=None):
     help="Python function definition",
 )
 def cli(import_mod=None, columns=None, group_by=None, func_def=None):
-    """Apply a Python function to aggregate groups of rows"""
+    """Apply a Python function to aggregate groups of rows
+
+    Examples:
+
+      Calculate the arithmetic mean:
+
+    \b
+        $ printf 'a,b\\n1,1\\n1,2\\n2,2\\n2,1\\n' \\
+          | csvaggregate -c b -f 'lambda x: sum(map(int, x)) / len(x)'
+        b
+        1.5
+
+      Concatenate values for each group:
+
+    \b
+        $ printf 'a,b\\n1,1\\n1,2\\n2,2\\n2,1\\n' \\
+          | csvaggregate -g a -c b -f 'lambda x: ":".join(x)'
+        a,b
+        1,1:2
+        2,2:1
+    """
     main(
         import_mod=import_mod,
         columns=columns,

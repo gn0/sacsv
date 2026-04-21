@@ -91,7 +91,28 @@ def main(key=None, keep_first=None, keep_last=None):
     ),
 )
 def cli(key=None, keep_first=None, keep_last=None):
-    """Drop duplicate rows"""
+    """Drop duplicate rows
+
+    Examples:
+
+      Drop duplicates in name, keeping the first row by birth year:
+
+    \b
+        $ printf 'name,birth_year\\na,2001\\na,2002\\nb,2001\\n' \\
+          | csvdropdups -k name -f birth_year
+        name,birth_year
+        a,2001
+        b,2001
+
+      Drop duplicates in name, keeping the last row by birth year:
+
+    \b
+        $ printf 'name,birth_year\\na,2001\\na,2002\\nb,2001\\n' \\
+          | csvdropdups -k name -l birth_year
+        name,birth_year
+        a,2002
+        b,2001
+    """
     main(key=key, keep_first=keep_first, keep_last=keep_last)
 
 

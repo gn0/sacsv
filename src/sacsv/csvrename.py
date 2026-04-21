@@ -34,7 +34,16 @@ def main(column, new_column):
     metavar="NEW_COLUMN_NAME",
 )
 def cli(column, new_column):
-    """Rename a column"""
+    """Rename a column
+
+    Example:
+
+    \b
+      $ printf 'a,b\\n1,2\\n3,4\\n' | csvrename b c
+      a,c
+      1,2
+      3,4
+    """
     main(column, new_column)
 
 

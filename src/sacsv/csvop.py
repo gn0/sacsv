@@ -79,7 +79,28 @@ def main(input_var, result_var, func_def, import_mod=None):
     help="Python function definition",
 )
 def cli(import_mod=None, input_var=None, result_var=None, func_def=None):
-    """Apply a Python function to one or more columns"""
+    """Apply a Python function to one or more columns
+
+    Examples:
+
+      Calculate word count:
+
+    \b
+        $ printf 'a\\nfoo bar\\nbaz\\n' \\
+          | csvop -r b -i a -f 'lambda x: len(x.split())'
+        a,b
+        foo bar,2
+        baz,1
+
+      Sum two columns:
+
+    \b
+        $ printf 'a,b\\n1,2\\n3,4\\n' \\
+          | csvop -r c -i a b -f 'lambda *x: sum(map(int, x))'
+        a,b,c
+        1,2,3
+        3,4,7
+    """
     main(
         input_var=input_var,
         result_var=result_var,
