@@ -4,12 +4,7 @@ import json
 import sys
 import collections
 
-
-def cast(obj):
-    try:
-        return float(obj)
-    except:
-        return obj
+from sacsv import try_cast
 
 
 def main(auto_cast=None):
@@ -17,8 +12,10 @@ def main(auto_cast=None):
     header = next(reader)
 
     for record in reader:
-        obj = collections.OrderedDict((k, cast(v) if auto_cast else v)
-                                      for k, v in zip(header, record))
+        obj = collections.OrderedDict(
+            (k, try_cast(v) if auto_cast else v)
+            for k, v in zip(header, record)
+        )
         print(json.dumps(obj))
 
     sys.stdout.flush()
@@ -31,7 +28,7 @@ def main(auto_cast=None):
     "-a",
     is_flag=True,
     default=False,
-    help="Automatically cast values to float when possible",
+    help="Automatically cast values to int or float when possible",
 )
 def cli(auto_cast=None):
     """Convert CSV to JSON lines

@@ -62,3 +62,14 @@ class MultiValueOption(click.Option):
 
         self._mvo_orig_process = opt_parser.process
         opt_parser.process = process_greedily # ty: ignore
+
+
+def try_cast(obj):
+    """Convert to int if possible, or to float if possible."""
+    for convert in (int, float):
+        try:
+            return convert(obj)
+        except:
+            pass
+
+    return obj
