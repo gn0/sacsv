@@ -14,7 +14,7 @@ dist/sacsv-%.tar.gz:
 
 .PHONY: test
 test:
-	uv run pytest -v --cov=src
+	uv run pytest -vv --cov=src
 
 .PHONY: upload
 upload: $(TARGETS)
