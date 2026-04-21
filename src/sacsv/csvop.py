@@ -46,7 +46,7 @@ def main(input_var, result_var, func_def, import_mod=None):
 @click.option(
     "-m",
     "--import-mod",
-    type=str,
+    type=list[str],
     cls=MultiValueOption,
     metavar="MODULE_NAME...",
     help="Names of Python modules to import (e.g., 'math')",
