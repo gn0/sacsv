@@ -3,11 +3,38 @@ import importlib
 import csv
 import sys
 import operator as op
+from functools import partial
 
-from sacsv import MultiValueOption
+from sacsv import MultiValueOption, try_cast
 
 
-def main(input_var, result_var, func_def, import_mod=None):
+def make_pickers(indices, auto_cast):
+    result = []
+
+    for index in indices:
+        # NOTE Use `functools.partial` to prevent late binding of
+        # `index` in the lambda expressions.
+        #
+        if auto_cast:
+            picker = partial(
+                lambda index, record: try_cast(record[index]),
+                index,
+            )
+        else:
+            picker = partial(lambda index, record: record[index], index)
+
+        result.append(picker)
+
+    return result
+
+
+def main(
+    input_var,
+    result_var,
+    func_def,
+    auto_cast=None,
+    import_mod=None,
+):
     for m in import_mod or tuple():
         globals()[m.split(".")[0]] = importlib.import_module(m.split(".")[0])
         importlib.import_module(m)
@@ -21,7 +48,10 @@ def main(input_var, result_var, func_def, import_mod=None):
         msg = f"Column {result_var} already exists in input"
         raise ValueError(msg)
 
-    pickers = tuple(op.itemgetter(columns.index(var)) for var in input_var)
+    pickers = make_pickers(
+        [columns.index(var) for var in input_var],
+        auto_cast,
+    )
 
     writer = csv.writer(sys.stdout)
     writer.writerow(
@@ -69,16 +99,27 @@ def main(input_var, result_var, func_def, import_mod=None):
     help="Name of new column to save function output to",
 )
 @click.option(
+    "--auto-cast",
+    "-a",
+    is_flag=True,
+    default=False,
+    help="Automatically cast arguments to int or float when possible",
+)
+@click.option(
     "-f",
     "--func-def",
-    # TODO Add -a/--auto-cast to convert values to float before feeding
-    # them to the function in `func_def`.
     type=str,
     required=True,
     metavar="PYTHON_FUNC",
     help="Python function definition",
 )
-def cli(import_mod=None, input_var=None, result_var=None, func_def=None):
+def cli(
+    import_mod=None,
+    input_var=None,
+    result_var=None,
+    auto_cast=None,
+    func_def=None,
+):
     """Apply a Python function to one or more columns
 
     Examples:
@@ -96,7 +137,7 @@ def cli(import_mod=None, input_var=None, result_var=None, func_def=None):
 
     \b
         $ printf 'a,b\\n1,2\\n3,4\\n' \\
-          | csvop -r c -i a b -f 'lambda *x: sum(map(int, x))'
+          | csvop -r c -i a b -f 'lambda *x: sum(x)' -a
         a,b,c
         1,2,3
         3,4,7
@@ -105,6 +146,7 @@ def cli(import_mod=None, input_var=None, result_var=None, func_def=None):
         input_var=input_var,
         result_var=result_var,
         func_def=func_def,
+        auto_cast=auto_cast,
         import_mod=import_mod,
     )
 

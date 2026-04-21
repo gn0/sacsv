@@ -56,3 +56,38 @@ def test_module_import(monkeypatch, capsys):
     )
 
     assert capsys.readouterr().out == "a,b\r\n10,3\r\n15,3\r\n20,4\r\n"
+
+
+def test_auto_cast(monkeypatch, capsys):
+    content = "a\n1\n2\n3\n"
+    monkeypatch.setattr("sys.stdin", io.StringIO(content))
+
+    m.main(
+        result_var="b",
+        input_var=["a"],
+        func_def="lambda x: x * 5",
+    )
+
+    assert capsys.readouterr().out == (
+        "a,b\r\n"
+        "1,11111\r\n"
+        "2,22222\r\n"
+        "3,33333\r\n"
+    )
+
+    content = "a\n1\n2\n3\n"
+    monkeypatch.setattr("sys.stdin", io.StringIO(content))
+
+    m.main(
+        result_var="b",
+        input_var=["a"],
+        func_def="lambda x: x * 5",
+        auto_cast=True,
+    )
+
+    assert capsys.readouterr().out == (
+        "a,b\r\n"
+        "1,5\r\n"
+        "2,10\r\n"
+        "3,15\r\n"
+    )
