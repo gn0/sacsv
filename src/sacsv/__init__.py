@@ -1,3 +1,4 @@
+import math
 from typing import Callable
 import click
 import click.parser
@@ -66,6 +67,9 @@ class MultiValueOption(click.Option):
 
 def try_cast(obj):
     """Convert to int if possible, or to float if possible."""
+    if obj == "":
+        return math.nan
+
     for convert in (int, float):
         try:
             return convert(obj)

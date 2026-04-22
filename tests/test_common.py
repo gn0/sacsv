@@ -20,6 +20,10 @@ def test_try_cast_of_float():
     assert math.isnan(m.try_cast("nan"))
 
 
+def test_try_cast_of_empty_string():
+    assert math.isnan(m.try_cast(""))
+
+
 def test_try_cast_of_non_number():
-    for x in ("", ".", "-", "+", "0f", "foo"):
+    for x in (".", "-", "+", "0f", "foo"):
         assert m.try_cast(x) == x
