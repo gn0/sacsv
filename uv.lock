@@ -3,7 +3,7 @@ revision = 3
 requires-python = ">=3.10"
 
 [options]
-exclude-newer = "2026-01-21T18:44:29.49515232Z"
+exclude-newer = "2026-01-24T03:42:59.41356109Z"
 exclude-newer-span = "P90D"
 
 [[package]]
@@ -213,7 +213,7 @@ wheels = [
 
 [[package]]
 name = "sacsv"
-version = "1.5.3"
+version = "1.6.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
