@@ -1,12 +1,26 @@
 import click
 import csv
+import math
 import sys
 import itertools as it
 
 from sacsv import MultiValueOption
 
 
-def main(group_by=None, column=None):
+def cast_to_numeric(obj):
+    """Convert to int or float if possible, or throw ValueError."""
+    if obj == "":
+        return math.nan
+
+    try:
+        return int(obj)
+    except ValueError:
+        pass
+
+    return float(obj)
+
+
+def main(column, group_by=None):
     reader = csv.reader(sys.stdin)
     header = next(reader)
 
@@ -14,11 +28,14 @@ def main(group_by=None, column=None):
     writer.writerow(header)
 
     if group_by is None:
-        pick_group = lambda r: 1
+        def pick_group(record):
+            return 1
     else:
-        pick_group = lambda r: tuple(r[header.index(c)] for c in group_by)
+        def pick_group(record):
+            return tuple(record[header.index(c)] for c in group_by)
 
-    pick_column = lambda r: float(r[header.index(column)])
+    def pick_column(record):
+        return cast_to_numeric(record[header.index(column)])
 
     for group, record_iter in it.groupby(
                                   sorted(reader, key=pick_group),
@@ -28,6 +45,9 @@ def main(group_by=None, column=None):
 
         for record in record_iter:
             value = pick_column(record)
+
+            if math.isnan(value):
+                continue
 
             if maximum is None:
                 maximizers = (record,)
