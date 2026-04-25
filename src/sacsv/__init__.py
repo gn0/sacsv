@@ -1,4 +1,5 @@
 import math
+from functools import partial
 from typing import Callable
 import click
 import click.parser
@@ -63,6 +64,26 @@ class MultiValueOption(click.Option):
 
         self._mvo_orig_process = opt_parser.process
         opt_parser.process = process_greedily # ty: ignore
+
+
+def make_pickers(indices, auto_cast):
+    result = []
+
+    for index in indices:
+        # NOTE Use `functools.partial` to prevent late binding of
+        # `index` in the lambda expressions.
+        #
+        if auto_cast:
+            picker = partial(
+                lambda index, record: try_cast(record[index]),
+                index,
+            )
+        else:
+            picker = partial(lambda index, record: record[index], index)
+
+        result.append(picker)
+
+    return result
 
 
 def try_cast(obj):

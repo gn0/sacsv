@@ -5,10 +5,16 @@ import sys
 import operator as op
 import itertools as it
 
-from sacsv import MultiValueOption
+from sacsv import MultiValueOption, make_pickers, try_cast
 
 
-def main(import_mod=None, columns=None, group_by=None, func_def=None):
+def main(
+    import_mod=None,
+    columns=None,
+    group_by=None,
+    func_def=None,
+    auto_cast=None,
+):
     for m in import_mod or tuple():
         globals()[m.split(".")[0]] = importlib.import_module(m.split(".")[0])
         importlib.import_module(m)
@@ -17,7 +23,10 @@ def main(import_mod=None, columns=None, group_by=None, func_def=None):
 
     reader = csv.reader(sys.stdin)
     header = next(reader)
-    pickers = tuple(op.itemgetter(header.index(c)) for c in columns)
+    pickers = make_pickers(
+        [header.index(c) for c in columns],
+        auto_cast,
+    )
 
     writer = csv.writer(sys.stdout)
 
@@ -77,16 +86,27 @@ def main(import_mod=None, columns=None, group_by=None, func_def=None):
     help="Names of one or more columns to group rows by",
 )
 @click.option(
+    "--auto-cast",
+    "-a",
+    is_flag=True,
+    default=False,
+    help="Automatically cast arguments to int or float when possible",
+)
+@click.option(
     "-f",
     "--func-def",
-    # TODO Add -a/--auto-cast to convert values to float before feeding
-    # them to the function in `func_def`.
     type=str,
     required=True,
     metavar="PYTHON_FUNC",
     help="Python function definition",
 )
-def cli(import_mod=None, columns=None, group_by=None, func_def=None):
+def cli(
+    import_mod=None,
+    columns=None,
+    group_by=None,
+    auto_cast=None,
+    func_def=None,
+):
     """Apply a Python function to aggregate groups of rows
 
     Examples:
@@ -113,6 +133,7 @@ def cli(import_mod=None, columns=None, group_by=None, func_def=None):
         columns=columns,
         group_by=group_by,
         func_def=func_def,
+        auto_cast=auto_cast,
     )
 
 

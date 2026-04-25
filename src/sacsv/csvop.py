@@ -3,29 +3,8 @@ import importlib
 import csv
 import sys
 import operator as op
-from functools import partial
 
-from sacsv import MultiValueOption, try_cast
-
-
-def make_pickers(indices, auto_cast):
-    result = []
-
-    for index in indices:
-        # NOTE Use `functools.partial` to prevent late binding of
-        # `index` in the lambda expressions.
-        #
-        if auto_cast:
-            picker = partial(
-                lambda index, record: try_cast(record[index]),
-                index,
-            )
-        else:
-            picker = partial(lambda index, record: record[index], index)
-
-        result.append(picker)
-
-    return result
+from sacsv import MultiValueOption, try_cast, make_pickers
 
 
 def main(
