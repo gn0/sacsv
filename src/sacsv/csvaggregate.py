@@ -115,7 +115,7 @@ def cli(
 
     \b
         $ printf 'a,b\\n1,1\\n1,2\\n2,2\\n2,1\\n' \\
-          | csvaggregate -c b -f 'lambda x: sum(map(int, x)) / len(x)'
+          | csvaggregate -c b -f 'lambda x: sum(x) / len(x)' -a
         b
         1.5
 
