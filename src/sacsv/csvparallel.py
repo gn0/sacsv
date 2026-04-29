@@ -120,7 +120,21 @@ def main(command, *args, jobs=None):
 )
 @click.argument("command", nargs=-1, required=True)
 def cli(command, jobs=None):
-    """Feed CSV rows to command in parallel"""
+    """Feed CSV rows to command in parallel
+
+    Example:
+
+      Process CSV with two workers that add their own PID to the output:
+
+    \b
+        $ printf 'a\n1\n2\n3\n' \
+          | csvparallel -j 2 -- \
+            csvop -i a -r b -m os -f 'lambda x: os.getpid()'
+        a,b
+        1,2371254
+        2,2371254
+        3,2371256
+    """
     main(command[0], *command[1:], jobs=jobs)
 
 
