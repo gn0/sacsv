@@ -118,9 +118,10 @@ def main(command, *args, jobs=None):
     default=mp.cpu_count(),
     help="Number of jobs to launch in parallel",
 )
-def cli(command, *args, jobs=None):
+@click.argument("command", nargs=-1, required=True)
+def cli(command, jobs=None):
     """Feed CSV rows to command in parallel"""
-    main(command=command, *args, jobs=jobs)
+    main(command[0], *command[1:], jobs=jobs)
 
 
 if __name__ == "__main__":
