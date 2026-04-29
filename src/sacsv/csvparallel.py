@@ -127,8 +127,8 @@ def cli(command, jobs=None):
       Process CSV with two workers that add their own PID to the output:
 
     \b
-        $ printf 'a\n1\n2\n3\n' \
-          | csvparallel -j 2 -- \
+        $ printf 'a\\n1\\n2\\n3\\n' \\
+          | csvparallel -j 2 -- \\
             csvop -i a -r b -m os -f 'lambda x: os.getpid()'
         a,b
         1,2371254
